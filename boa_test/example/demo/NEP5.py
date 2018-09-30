@@ -46,7 +46,7 @@ OWNER = b'#\xba\'\x03\xc52c\xe8\xd6\xe5"\xdc2 39\xdc\xd8\xee\xe9'
 DECIMALS = 0
 # Number of decimal places
 
-TOTAL_SUPPLY = 10000
+TOTAL_SUPPLY = 10000000 * 100000000
 # Total Supply of tokens in the system
 
 
@@ -95,7 +95,7 @@ def Main(operation, args):
     elif trigger == Application():
 
         if operation == 'deploy':
-            deploy()
+            return deploy()
 
         elif operation == 'name':
             n = TOKEN_NAME
@@ -168,16 +168,18 @@ def deploy():
     if not CheckWitness(OWNER):
         print("Must be owner to deploy")
         return False
+        
     if not Get(context, 'initialized'):
         # do deploy logic
         Put(context, 'initialized', 1)
         Put(context, OWNER, TOTAL_SUPPLY)
         return add_to_circulation(context, TOTAL_SUPPLY)
         return False
+
 def add_to_circulation(context, amount):
     """
     Adds an amount of token to circlulation
-:param amount: int the amount to add to circulation
+    :param amount: int the amount to add to circulation
     """
     TOKEN_CIRC_KEY = b'in_circulation'
     current_supply = Get(context, TOKEN_CIRC_KEY)
